@@ -1,5 +1,6 @@
 package rawmap
 
+import "fmt"
 import "os"
 import "syscall"
 import "unsafe"
@@ -9,18 +10,18 @@ func MmapShared(file *os.File, start, length int, protmode ProtectionMode) ([]by
 	prot_, access_ := 0, 0
 	switch protmode {
 	case PROTMODE_READONLY:
-		prot_, access_ = syscall.PAGE_READONLY, FILE_MAP_READ
+		prot_, access_ = syscall.PAGE_READONLY, syscall.FILE_MAP_READ
 	case PROTMODE_READWRITE:
-		prot_ = syscall.PAGE_READWRITE, FILE_MAP_READ | FILE_MAP_WRITE
+		prot_, access_ = syscall.PAGE_READWRITE, syscall.FILE_MAP_READ | syscall.FILE_MAP_WRITE
 	default:
 		return nil, fmt.Errorf("unknown protmode: %#x", protmode)
 	}
-	fmap, err := syscall.CreateFileMapping(syscall.Handle(file.Fd()), nil, prot_, 0, 0, nil)
+	fmap, err := syscall.CreateFileMapping(syscall.Handle(file.Fd()), nil, uint32(prot_), 0, 0, nil)
 	if err != nil {
 		return nil, err
 	}
 	defer syscall.CloseHandle(fmap)
-	ptr, err := syscall.MapViewOfFile(fmap, access_, uint32(start>>32), uint32(start), uintptr(length))
+	ptr, err := syscall.MapViewOfFile(fmap, uint32(access_), uint32(start>>32), uint32(start), uintptr(length))
 	if err != nil {
 		return nil, err
 	}
