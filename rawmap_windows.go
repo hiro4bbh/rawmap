@@ -6,7 +6,7 @@ import "unsafe"
 
 // Returns the byte slice to the region of the memory-mapped file.
 func MmapSharedReadonly(file *os.File, start, length int) ([]byte, error) {
-	fmap, err := syscall.CreateFileMapping(syscall.Handle(file.Fd()), nil, syscall.PAGE_READONLY, uint32(length>>32), uint32(length), nil)
+	fmap, err := syscall.CreateFileMapping(syscall.Handle(file.Fd()), nil, syscall.PAGE_READONLY, 0, 0, nil)
 	if err != nil {
 		return nil, err
 	}

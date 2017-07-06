@@ -26,7 +26,7 @@ func TestMmapSharedReadonly(t *testing.T) {
 			t.Fatalf("Munmap: unexpected error: %s", err)
 		}
 	}
-	msg := bytes.Repeat([]byte("Hello, world!"), 1024)
+	msg := bytes.Repeat([]byte("Hello, world!"), 1024*1024)
 	test(msg, 0, len(msg))
-	test(msg, 4096, 4096)
+	test(msg, 65536, 4096)
 }
