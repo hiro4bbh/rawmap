@@ -3,6 +3,7 @@ package rawmap
 
 import "os"
 
+// ProtectionMode is the type for supported protection modes.
 type ProtectionMode int
 
 // The list of supported protection modes.
@@ -11,7 +12,7 @@ const (
 	PROTMODE_READWRITE
 )
 
-// Returns the corresponding flag used in os.OpenFile.
+// OpenFlag returns the corresponding flag used in os.OpenFile.
 func (protmode ProtectionMode) OpenFlag() int {
 	switch protmode {
 	case PROTMODE_READONLY:
