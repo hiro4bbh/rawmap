@@ -12,7 +12,7 @@ func MmapShared(file *os.File, start, length int, protmode ProtectionMode) ([]by
 	case PROTMODE_READONLY:
 		prot_, access_ = syscall.PAGE_READONLY, syscall.FILE_MAP_READ
 	case PROTMODE_READWRITE:
-		prot_, access_ = syscall.PAGE_READWRITE, syscall.FILE_MAP_READ | syscall.FILE_MAP_WRITE
+		prot_, access_ = syscall.PAGE_READWRITE, syscall.FILE_MAP_READ|syscall.FILE_MAP_WRITE
 	default:
 		return nil, fmt.Errorf("unknown protmode: %#x", protmode)
 	}
